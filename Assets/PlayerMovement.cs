@@ -4,28 +4,50 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    private float horizontal;
+    private float speed = 8f;
+    private float jumpingPower = 16f;
+    private bool isFacingRight = true;
 
-    public CharacterController2D controller;
+    [SerializeField] private Rigidbody2D rb;
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private LayerMask groundLayer;
 
-    float horizzontalMove = 0f;
-
-    public float runSpeed = 40f;
-    bool jump = false;
-
-    // Update is called once per frame
     void Update()
     {
-       horizzontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
+        horizontal = Input.GetAxisRaw("Horizontal");
 
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump") && IsGrounded())
         {
-            jump = true;
+            rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
         }
+
+        if (Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
+        }
+
+        Flip();
     }
 
-    private void FixedUpdate() // al posto di essere chiamato ogni frame, può fare un controllo ogni x
+    private void FixedUpdate()
     {
-        controller.Move(horizzontalMove * Time.fixedDeltaTime, false, jump);
-        jump = false;
+        rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
+    }
+
+    private bool IsGrounded()
+    {
+        return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
+    }
+
+    private void Flip()
+    {
+        if (isFacingRight && horizontal < 0f || !isFacingRight && horizontal > 0f)
+        {
+            isFacingRight = !isFacingRight;
+            Vector3 localScale = transform.localScale;
+            localScale.x *= -1f;
+            transform.localScale = localScale;
+        }
     }
 }

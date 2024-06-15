@@ -1065,7 +1065,7 @@ CircleCollider2D:
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: c3b9a8ce4bd7efe4bb18908ab156dd6f, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1149,8 +1149,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6f0b25270821264e9c698538dbd5072, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controller: {fileID: 1188562500}
-  runSpeed: 40
+  rb: {fileID: 1188562501}
+  groundCheck: {fileID: 342735959}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 55
 --- !u!1 &1749964706
 GameObject:
   m_ObjectHideFlags: 0
